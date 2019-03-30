@@ -17,5 +17,10 @@ with TelegramClient('session_name', api_id, api_hash) as client:
         client.send_code_request(phone_number)
         me = client.sign_in(phone_number, input('Enter code: '))
 
+    try:
+        # # Does it have an username? Use it!
+        entity = client.get_entity('$USER_NAME')
+
+
     except Exception as e:
         print (e)
