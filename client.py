@@ -1,12 +1,11 @@
-from telethon import TelegramClient, events, sync
 from pprint import pprint
+from datetime import timedelta, datetime
+
+from telethon import TelegramClient, events, sync
 from telethon.tl.functions.users import GetFullUserRequest
 from telethon.tl.functions.channels import EditBannedRequest
 from telethon.tl.types import ChatBannedRights
-from datetime import timedelta, datetime
 
-# These example values won't work. You must get your own api_id and
-# api_hash from https://my.telegram.org, under API Development.
 api_id = 111111
 api_hash = '$API_HASH'
 phone_number = '+$PHONE_NUMER'
@@ -18,48 +17,40 @@ with TelegramClient('session_name', api_id, api_hash) as client:
         me = client.sign_in(phone_number, input('Enter code: '))
 
     try:
-        # # Does it have an username? Use it!
         entity = client.get_entity('$USER_NAME')
 
-        # Do you have a conversation open with them? Get dialogs.
-        client.get_dialogs()
+        dialog_list = client.get_dialogs()
 
-        # # Are they participant of some group? Get them.
+        messages_list = client.get_messages_list(group, 10)
 
-        # # Is the entity the original sender of a forwarded message? Get it.
-        # client.get_messages('$GROUP', 100)
+        # Get n message (sorted by date desc, 0 will be latest message)
+        message = messages_list[1].to_dict()
+        # pprint(message)
 
-        # # NOW you can use the ID, anywhere!
-        # entity = client.get_entity(123456)
-        # # client.send_message(123456, 'Hi!')
-
-        messages = client.get_messages(group, 10)
-        message = messages[1].to_dict()
-        pprint(message)
-        print()
-        print()
-
+        # Reach related user information
         user = message.get('from_id')
-        print (user)
-        print()
-        print()
         full = client(GetFullUserRequest(user)).to_dict()
         # pprint(full)
 
+        # Iterate our group participants list
         participants = client.get_participants(group)
         for participant in participants:
             participant_to_review = participant.to_dict()
+
+            # If "spammer" user is a participant
             if str(user) == participant_to_review.get('id'):
                 import pudb; pu.db
 
+            # Review if there is any bot in our participants
             if participant_to_review.get('bot'):
-                print (participant_to_review.get('bot'), participant_to_review.get('id'), participant_to_review.get('username'))
+                import pudb; pu.db
+                # print (participant_to_review.get('bot'), participant_to_review.get('id'), participant_to_review.get('username'))
                 
         # Ban user
         # rights = ChatBannedRights(
         #     until_date=datetime.now() + timedelta(days=700),
-        #     view_messages=True,
-        #     send_messages=True,
+        #     view_messages_list=True,
+        #     send_messages_list=True,
         #     send_media=True,
         #     send_stickers=True,
         #     send_gifs=True,
@@ -68,7 +59,6 @@ with TelegramClient('session_name', api_id, api_hash) as client:
         #     embed_links=True
         # )
         # request = client(EditBannedRequest(group, user, rights))
-        print ('HERE')
 
     except Exception as e:
         print (e)
