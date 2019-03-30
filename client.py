@@ -82,4 +82,4 @@ with TelegramClient('session_name', api_id, api_hash) as client:
 
 
     except Exception as e:
-        print (e)
+        print ("An exception occured: '{}'".format(e))
