@@ -47,8 +47,7 @@ with TelegramClient('session_name', api_id, api_hash) as client:
         # entity = client.get_entity('$USER')
 
         dialog_list = client.get_dialogs()
-
-        messages_list = client.get_messages_list(group, 10)
+        messages_list = client.get_messages(group, 10)
 
         # Get n message (sorted by date desc, 0 will be latest message)
         message = messages_list[1].to_dict()
