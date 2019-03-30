@@ -29,7 +29,7 @@ with TelegramClient('session_name', api_id, api_hash) as client:
         embed_links=True
     )
 
-    def confirm_ban(group, affectedUser, bannedRights):
+    def confirm_ban(group, userID, username, banned_rights):
         """
         Review if a user should be banned with user confirmaton
 
@@ -39,9 +39,9 @@ with TelegramClient('session_name', api_id, api_hash) as client:
         - S
         - s
         """
-        if input('Do you want to ban {} ({}): [y/n]  '.format(current_userID, current_username)) in ["y", "Y", "s", "S"]:
+        if input('Do you want to ban {} ({}): [y/n]  '.format(userID, username)) in ["y", "Y", "s", "S"]:
             print()
-            return client(EditBannedRequest(group, affectedUser, bannedRights))
+            return client(EditBannedRequest(group, userID, banned_rights))
 
     try:
         # entity = client.get_entity('$USER')
@@ -53,9 +53,9 @@ with TelegramClient('session_name', api_id, api_hash) as client:
         message = messages_list[1].to_dict()
         # pprint(message)
 
-        # Reach related affectedUser information
-        affectedUser = message.get('from_id')
-        full = client(GetFullUserRequest(affectedUser)).to_dict()
+        # Reach related affected_user information
+        affected_user = message.get('from_id')
+        full = client(GetFullUserRequest(affected_user)).to_dict()
         pprint(full)
 
         # Iterate our group participants list
@@ -66,17 +66,19 @@ with TelegramClient('session_name', api_id, api_hash) as client:
             current_userID = participant_to_review.get('id')
             current_is_bot = participant_to_review.get('bot')
 
-            # If "spammer" affectedUser is a participant
-            if affectedUser == current_userID:
+            # If "spammer" affected_user is a participant
+            if affected_user == current_userID:
                 print("\n - Suspect user {} ({}) it's a participant of '{}'!".format(
                     current_userID, current_username, group)
                 )
-                confirm_ban(group, affectedUser, rights)
+                confirm_ban(group, current_userID, current_username, rights)
 
             # Review if there is any bot in our participants
             if current_is_bot:
-                print ("\n - {} ({}) looks like a bot!".format(current_userID, current_username))
-                confirm_ban(group, affectedUser, rights)
+                print ("\n - {} ({}) looks like a bot!".format(
+                    current_userID, current_username)
+                )
+                confirm_ban(group, current_userID, current_username, rights)
 
 
     except Exception as e:
