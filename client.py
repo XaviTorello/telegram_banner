@@ -53,10 +53,10 @@ with TelegramClient('session_name', api_id, api_hash) as client:
         message = messages_list[1].to_dict()
         # pprint(message)
 
-        # Reach related user information
-        user = message.get('from_id')
-        full = client(GetFullUserRequest(user)).to_dict()
-        # pprint(full)
+        # Reach related affectedUser information
+        affectedUser = message.get('from_id')
+        full = client(GetFullUserRequest(affectedUser)).to_dict()
+        pprint(full)
 
         # Iterate our group participants list
         participants = client.get_participants(group)
