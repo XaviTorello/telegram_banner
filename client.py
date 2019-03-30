@@ -74,23 +74,10 @@ with TelegramClient('session_name', api_id, api_hash) as client:
                 confirm_ban(group, affectedUser, rights)
 
             # Review if there is any bot in our participants
-            if participant_to_review.get('bot'):
-                import pudb; pu.db
-                # print (participant_to_review.get('bot'), participant_to_review.get('id'), participant_to_review.get('username'))
-                
-        # Ban user
-        # rights = ChatBannedRights(
-        #     until_date=datetime.now() + timedelta(days=700),
-        #     view_messages_list=True,
-        #     send_messages_list=True,
-        #     send_media=True,
-        #     send_stickers=True,
-        #     send_gifs=True,
-        #     send_games=True,
-        #     send_inline=True,
-        #     embed_links=True
-        # )
-        # request = client(EditBannedRequest(group, user, rights))
+            if current_is_bot:
+                print ("\n - {} ({}) looks like a bot!".format(current_userID, current_username))
+                confirm_ban(group, affectedUser, rights)
+
 
     except Exception as e:
         print (e)
