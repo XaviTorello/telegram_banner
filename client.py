@@ -21,6 +21,9 @@ with TelegramClient('session_name', api_id, api_hash) as client:
         # # Does it have an username? Use it!
         entity = client.get_entity('$USER_NAME')
 
+        # Do you have a conversation open with them? Get dialogs.
+        client.get_dialogs()
+
 
     except Exception as e:
         print (e)
