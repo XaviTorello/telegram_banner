@@ -52,20 +52,22 @@ with TelegramClient('session_name', api_id, api_hash) as client:
             if str(user) == participant_to_review.get('id'):
                 import pudb; pu.db
 
-
-        Ban user
-        rights = ChatBannedRights(
-            until_date=datetime.now() + timedelta(days=700),
-            view_messages=True,
-            send_messages=True,
-            send_media=True,
-            send_stickers=True,
-            send_gifs=True,
-            send_games=True,
-            send_inline=True,
-            embed_links=True
-        )
-        request = client(EditBannedRequest(group, user, rights))
+            if participant_to_review.get('bot'):
+                print (participant_to_review.get('bot'), participant_to_review.get('id'), participant_to_review.get('username'))
+                
+        # Ban user
+        # rights = ChatBannedRights(
+        #     until_date=datetime.now() + timedelta(days=700),
+        #     view_messages=True,
+        #     send_messages=True,
+        #     send_media=True,
+        #     send_stickers=True,
+        #     send_gifs=True,
+        #     send_games=True,
+        #     send_inline=True,
+        #     embed_links=True
+        # )
+        # request = client(EditBannedRequest(group, user, rights))
         print ('HERE')
 
     except Exception as e:
