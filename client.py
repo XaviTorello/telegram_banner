@@ -44,7 +44,7 @@ with TelegramClient('session_name', api_id, api_hash) as client:
             return client(EditBannedRequest(group, affectedUser, bannedRights))
 
     try:
-        entity = client.get_entity('$USER_NAME')
+        # entity = client.get_entity('$USER')
 
         dialog_list = client.get_dialogs()
 
