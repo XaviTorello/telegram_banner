@@ -46,6 +46,13 @@ with TelegramClient('session_name', api_id, api_hash) as client:
         full = client(GetFullUserRequest(user)).to_dict()
         # pprint(full)
 
+        participants = client.get_participants(group)
+        for participant in participants:
+            participant_to_review = participant.to_dict()
+            if str(user) == participant_to_review.get('id'):
+                import pudb; pu.db
+
+
 
     except Exception as e:
         print (e)
