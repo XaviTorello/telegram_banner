@@ -39,6 +39,13 @@ with TelegramClient('session_name', api_id, api_hash) as client:
         print()
         print()
 
+        user = message.get('from_id')
+        print (user)
+        print()
+        print()
+        full = client(GetFullUserRequest(user)).to_dict()
+        # pprint(full)
+
 
     except Exception as e:
         print (e)
