@@ -16,6 +16,33 @@ with TelegramClient('session_name', api_id, api_hash) as client:
         client.send_code_request(phone_number)
         me = client.sign_in(phone_number, input('Enter code: '))
 
+    # Banned rights to apply
+    rights = ChatBannedRights(
+        until_date=timedelta(days=700),
+        view_messages=True,
+        send_messages=True,
+        send_media=True,
+        send_stickers=True,
+        send_gifs=True,
+        send_games=True,
+        send_inline=True,
+        embed_links=True
+    )
+
+    def confirm_ban(group, affectedUser, bannedRights):
+        """
+        Review if a user should be banned with user confirmaton
+
+        Abled affirmative responses:
+        - y
+        - Y
+        - S
+        - s
+        """
+        if input('Do you want to ban {} ({}): [y/n]  '.format(current_userID, current_username)) in ["y", "Y", "s", "S"]:
+            print()
+            return client(EditBannedRequest(group, affectedUser, bannedRights))
+
     try:
         entity = client.get_entity('$USER_NAME')
 
