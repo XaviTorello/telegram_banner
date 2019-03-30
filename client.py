@@ -62,10 +62,16 @@ with TelegramClient('session_name', api_id, api_hash) as client:
         participants = client.get_participants(group)
         for participant in participants:
             participant_to_review = participant.to_dict()
+            current_username = participant_to_review.get('username')
+            current_userID = participant_to_review.get('id')
+            current_is_bot = participant_to_review.get('bot')
 
-            # If "spammer" user is a participant
-            if str(user) == participant_to_review.get('id'):
-                import pudb; pu.db
+            # If "spammer" affectedUser is a participant
+            if affectedUser == current_userID:
+                print("\n - Suspect user {} ({}) it's a participant of '{}'!".format(
+                    current_userID, current_username, group)
+                )
+                confirm_ban(group, affectedUser, rights)
 
             # Review if there is any bot in our participants
             if participant_to_review.get('bot'):
