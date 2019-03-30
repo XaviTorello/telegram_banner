@@ -24,6 +24,21 @@ with TelegramClient('session_name', api_id, api_hash) as client:
         # Do you have a conversation open with them? Get dialogs.
         client.get_dialogs()
 
+        # # Are they participant of some group? Get them.
+
+        # # Is the entity the original sender of a forwarded message? Get it.
+        # client.get_messages('$GROUP', 100)
+
+        # # NOW you can use the ID, anywhere!
+        # entity = client.get_entity(123456)
+        # # client.send_message(123456, 'Hi!')
+
+        messages = client.get_messages(group, 10)
+        message = messages[1].to_dict()
+        pprint(message)
+        print()
+        print()
+
 
     except Exception as e:
         print (e)
